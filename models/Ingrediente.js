@@ -1,6 +1,6 @@
 
 module.exports = (sequelize,DataTypes) => {
-    const Ingrediente = sequelize.define('tarjeta',{
+    const Ingrediente = sequelize.define('ingrediente',{
         Nombre: {
             type: DataTypes.STRING, 
             allowNull: false
