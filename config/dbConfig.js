@@ -1,3 +1,5 @@
+
+// ANDREA
 module.exports = {
     HOST: 'localhost',
     PORT: '5432',
@@ -13,3 +15,5 @@ module.exports = {
         idle: 10000
     }
 }
+
+// JOAQUIN

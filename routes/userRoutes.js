@@ -5,6 +5,12 @@ const router = require('express').Router()
 router.post('/registrarUsuario',usuarioController.registrarUsuario)
 router.get('/iniciarSesion',usuarioController.iniciarSesion)
 router.get('/getDatosUsuario',verificarToken, usuarioController.getDatosUser)
+router.post('/modificarDatosUsuario',verificarToken,usuarioController.modificarDatosUsuario)
+router.post('/actualizarcontrasena',verificarToken,usuarioController.actualizarcontrasena)
+router.get('/traerLongitudContrasena',verificarToken,usuarioController.traerLongitudContraseña)
+router.post('/agregarTarjeta',verificarToken,usuarioController.agregarTarjeta)
+router.get('/traerTarjetasUsuario',verificarToken,usuarioController.traerTarjetasUsuario)
+router.get('/traerTrajetabyId',verificarToken,usuarioController.traerTrajetabyId)
 
 
 module.exports = router

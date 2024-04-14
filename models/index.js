@@ -82,10 +82,7 @@ db.IngredienteProducto = IngredienteProducto;
 db.Orden = Orden;
 db.DetallesOrden = DetallesOrden;
 
-//db.Usuario = Usuario;
-//db.Nota = Nota;
-//db.PlantillaNota = PlantillaNota;
-//db.Campo = Campo;
+
 
 db.sequelize.sync({force: false})
 .then(()=> {

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt'); // Hashing para contraseñas en la BD
 dotenv.config();
 
 const Usuario = db.Usuario;
+const Tarjeta = db.Tarjeta;
 // Constante de valiadaciones necesarias para crear usuario
 const validaciones = [
     {
@@ -114,10 +115,177 @@ const getDatosUser = async (req, res) => {
     }
 }
 
+// modificar datos
+const modificarDatosUsuario = async (req, res) => {
+    try {
+        const userId = req.userId;
+        if (!userId) {
+            return res.status(400).send('Identificador de usuario no proporcionado');
+        }
+
+        const usuario = await Usuario.findByPk(userId);
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+
+        const camposParaActualizar = ['nombreUsuario', 'apellido', 'emailAddress'].reduce((acc, campo) => {
+            if (req.body[campo]) acc[campo] = req.body[campo];
+            return acc;
+        }, {});
+        // owo aqui con reduce verificamos los campos que el usuario realmente
+        // quiere actualizar, y solo nos quedamos con esos campos para hacerle el update en el array camposParaActualizar
+        // asi hacemos cod mas eficiente y no esta actualizando consas que se mantienen igual
+
+        if (Object.keys(camposParaActualizar).length === 0) {
+            return res.status(400).send('No hay cambios para actualizar');
+        } // vemos q si la longitud de nuestro array de objetos campos para actualizar es igual a 0 entonces no se actualiza nada
+
+        await usuario.update(camposParaActualizar); // se genere udpdate
+        await usuario.reload();  // se recarga porsiaca
+        res.json(usuario);
+    } catch (error) {
+        console.error('Error al modificar los datos del usuario:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+};
+
+// cambiar contraseña
+const actualizarcontrasena = async(req,res) => {
+    try{
+        const userId = req.userId;
+        if (!userId) {
+            return res.status(400).send('Identificador de usuario no proporcionado');
+        }
+
+        const usuario = await Usuario.findByPk(userId);
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+        if (!req.query.contraseña){
+            return res.status(404).send('No se ha encontrado contraseña para actualizar');
+        }
+
+        if(req.query.contraseña){
+            const hashedContraseña = await bcrypt.hash(req.query.contraseña, 10);
+            usuario.contraseña = hashedContraseña;
+            const contraseñaActualizada = await usuario.save();
+            res.json(contraseñaActualizada);
+        }
+
+    }catch(error){
+        console.error('Error al cambiar los datos del usuario:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+}
+
+// tarer contraseña
+const traerLongitudContraseña = async(req,res) => {
+    try{
+        const userId = req.userId;
+        const usuario = await Usuario.findByPk(userId, {
+            attributes: ['contraseña'],
+        });
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+        const longitudContraseña = usuario.contraseña.length;
+        return res.status(200).json({ longitudContraseña });
+    }catch (error) {
+        console.error(error);
+        return res.status(500).send('Error interno del servidor');
+    }
+
+}
+
 // const subir foto
+
+// agregar tarjeta
+const agregarTarjeta = async(req,res) => {
+    try{
+        const userId = req.userId;
+        const usuario = await Usuario.findByPk(userId);
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+        if (!req.body.NumeroTarjeta || !req.body.FechaVMes || !req.body.FechaVAño || !req.body.Codigo){
+            return res.status(404).send('Faltan campos para poder agregar una tarjeta');
+        }
+        const { NumeroTarjeta, FechaVMes, FechaVAño, Codigo} = req.body;
+
+        const nuevaTarjeta = await Tarjeta.create({
+            userId,
+            NumeroTarjeta,
+            FechaVMes,
+            FechaVAño,
+            Codigo
+        })
+        return res.status(201).json({nuevaTarjeta});
+    }catch(error){
+        console.error('Error al agregar la tarjeta:', error);
+        return res.status(500).send('Error interno del servidor');
+    }
+
+}
+
+const traerTarjetasUsuario = async(req, res) => {
+    try {
+        const userId = req.userId; 
+        const usuario = await Usuario.findByPk(userId);
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+        const tarjetas = await Tarjeta.findAll({
+            where: { userId: userId },
+            attributes: { exclude: [] } 
+        });
+        if (!tarjetas || tarjetas.length === 0) {
+            return res.status(404).send('Tarjetas no encontradas');
+        }
+
+        res.status(200).json({ tarjetas });
+    } catch (error) {
+        console.error("Error al traer tarjetas", error);
+        res.status(500).send('Error interno del servidor');
+    }
+}
+const traerTrajetabyId = async(req,res) => {
+    try {
+        const userId = req.userId; 
+        const usuario = await Usuario.findByPk(userId);
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+        if(!req.query.idTarjeta){
+            return res.status(400).send('No se ha enviado ID de Tarjeta');
+        }
+        const id = req.query.idTarjeta
+
+        const tarjeta = await Tarjeta.findOne({
+            where: { userId: userId ,
+                    id: id
+            },
+            attributes: { exclude: [] } 
+        });
+        if (!tarjeta) {
+            return res.status(404).send('Tarjeta no encontrada');
+        }
+        
+        res.status(200).json({ tarjeta });
+    } catch (error) {
+        console.error("Error al traer tarjeta", error);
+        res.status(500).send('Error interno del servidor');
+    }
+}
+
 
 module.exports = {
     registrarUsuario,
     iniciarSesion,
-    getDatosUser
+    getDatosUser,
+    modificarDatosUsuario,
+    actualizarcontrasena,
+    traerLongitudContraseña,
+    agregarTarjeta ,
+    traerTarjetasUsuario, 
+    traerTrajetabyId 
 };
