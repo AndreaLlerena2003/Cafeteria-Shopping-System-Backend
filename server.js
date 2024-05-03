@@ -8,6 +8,7 @@ const app = express()
 //middleware: It is those methods/functions/operations that are called BETWEEN processing the Request and sending the Response in your application method.
 app.use(cors());
 app.use(express.json());
+
 //s a method inbuilt in express to recognize the incoming Request Object as a JSON Object.
 // This method is called as a middleware in your application using the code:
 app.use(express.urlencoded({extended: true}));
@@ -20,10 +21,15 @@ const router_usuario = require('./routes/userRoutes');
 const router_ingrediente = require('./routes/ingredienteRoutes');
 const router_categorias = require('./routes/categoriasRoutes');
 const router_producto = require('./routes/productosRoutes');
+const router_carrito = require('./routes/carritoDetalleRoutes');
+const router_carritoDetalle = require('./routes/carritoDetalleRoutes');
 app.use('/api/usuario',router_usuario)
 app.use('/api/ingrediente',router_ingrediente)
 app.use('/api/categorias',router_categorias)
 app.use('/api/productos',router_producto)
+app.use('/api/carrito',router_carrito)
+app.use('/api/carritoDetalle',router_carritoDetalle)
+
  
  
 

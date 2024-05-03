@@ -12,6 +12,10 @@ module.exports = (sequelize,DataTypes) => {
         Total: {
             type: DataTypes.FLOAT,  
             allowNull: false
+        },
+        MedioDePago: {
+            type: DataTypes.STRING,
+            allowNull: true 
         }
     })
 

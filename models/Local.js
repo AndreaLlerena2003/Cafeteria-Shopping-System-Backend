@@ -12,6 +12,10 @@ module.exports = (sequelize,DataTypes) => {
         Longitud: {
             type: DataTypes.DOUBLE,
             allowNull: false
+        },
+        Horario:{
+            type: DataTypes.STRING,
+            allowNull: false
         }
     })
 

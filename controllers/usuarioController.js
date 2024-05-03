@@ -46,6 +46,7 @@ const registrarUsuario = async (req, res) => {
     if (errores.length > 0) {
         return res.status(400).send(errores.join('. '));
     }
+    
 
     try {
         // Hashear la contraseña antes de almacenarla en la base de datos :) 
