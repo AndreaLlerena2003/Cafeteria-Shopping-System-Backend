@@ -62,7 +62,7 @@ const eliminarCarritoDetalle = async (req, res) => {
  
 };
 
-const modificarCarritoDetalle = async(req,res) => {
+const modificarCarritoDetalleMas = async(req,res) => {
     const {carritoDetalleId} = req.query;
     console.log(carritoDetalleId);  
         try {
@@ -71,6 +71,15 @@ const modificarCarritoDetalle = async(req,res) => {
                 return res.status(404).json({ error: 'Carrito no encontrado' });
             }
             carrito.Cantidad = carrito.Cantidad + 1;
+            const producto = await carrito.getProducto();
+            if(!producto){
+                return res.status(404).json({ error: 'Producto no encontrado' });
+            }
+            console.log(carrito.Cantidad);
+            console.log(producto.Precio);
+
+            const precio = producto.Precio * carrito.Cantidad;
+            carrito.Precio = precio;
             await carrito.save(); 
             res.status(201).json(carrito);
 
@@ -81,10 +90,40 @@ const modificarCarritoDetalle = async(req,res) => {
 
 }
 
+const modificarCarritoDetalleMenos = async(req,res) => {
+    const {carritoDetalleId} = req.query;
+    console.log(carritoDetalleId);  
+        try {
+            let carrito = await CarritoDetalle.findByPk(carritoDetalleId);
+            if (!carrito){
+                return res.status(404).json({ error: 'Carrito no encontrado' });
+            }
+            carrito.Cantidad = carrito.Cantidad - 1;
+            const producto = await carrito.getProducto();
+            if(!producto){
+                return res.status(404).json({ error: 'Producto no encontrado' });
+            }
+            console.log(carrito.Cantidad);
+            console.log(producto.Precio);
+            const precio = producto.Precio * carrito.Cantidad;
+            carrito.Precio = precio;
+
+            await carrito.save(); 
+            res.status(201).json(carrito);
+
+        }catch (error) {
+            console.error('Error al modificar carrito:', error);
+            res.status(500).json({ error: 'Error interno del servidor' });
+        }
+
+}
+
+
 module.exports = {
     crearCarritoDetalle,
     eliminarCarritoDetalle,
-    modificarCarritoDetalle
+    modificarCarritoDetalleMas,
+    modificarCarritoDetalleMenos
 };
 
 

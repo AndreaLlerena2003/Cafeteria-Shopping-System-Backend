@@ -13,7 +13,8 @@ const verificarToken = require('../middleware/authMiddleware');
 
 router.post('/agregarACarrito', verificarToken, carritoDetalleController.crearCarritoDetalle);
 router.delete('/eliminarDetalleCarrito',carritoDetalleController.eliminarCarritoDetalle);
-router.patch('/modificarDetalleCarritoCantidad',carritoDetalleController.modificarCarritoDetalle);
+router.patch('/modificarDetalleCarritoMas',carritoDetalleController.modificarCarritoDetalleMas);
+router.patch('/modificarDetalleCarritoMenos',carritoDetalleController.modificarCarritoDetalleMenos);
 // modificar tamaño
 
 module.exports = router;

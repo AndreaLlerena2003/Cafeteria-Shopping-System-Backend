@@ -14,7 +14,7 @@ module.exports = (sequelize,DataTypes) => {
             allowNull: false
         },
         MedioDePago: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: true 
         }
     })
