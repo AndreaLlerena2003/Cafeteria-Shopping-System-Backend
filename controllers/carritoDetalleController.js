@@ -54,6 +54,7 @@ const eliminarCarritoDetalle = async (req, res) => {
                 return res.status(404).json({ error: 'Carrito no encontrado' });
             }
             await carrito.destroy();
+            await crearCarritoController.recalculo_del_total(carrito.carritoId);
             res.status(204).send(); 
         }catch (error) {
             console.error('Error al eliminar carrito:', error);
@@ -81,7 +82,8 @@ const modificarCarritoDetalleMas = async(req,res) => {
             const precio = producto.Precio * carrito.Cantidad;
             carrito.Precio = precio;
             await carrito.save(); 
-            res.status(201).json(carrito);
+            await crearCarritoController.recalculo_del_total(carrito.carritoId);
+            res.status(200).json(carrito);
 
         }catch (error) {
             console.error('Error al modificar carrito:', error);
@@ -109,7 +111,8 @@ const modificarCarritoDetalleMenos = async(req,res) => {
             carrito.Precio = precio;
 
             await carrito.save(); 
-            res.status(201).json(carrito);
+            await crearCarritoController.recalculo_del_total(carrito.carritoId);
+            res.status(200).json(carrito);
 
         }catch (error) {
             console.error('Error al modificar carrito:', error);

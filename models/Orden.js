@@ -15,7 +15,7 @@ module.exports = (sequelize,DataTypes) => {
         },
         MedioDePago: {
             type: DataTypes.INTEGER,
-            allowNull: true 
+            allowNull: true
         }
     })
 

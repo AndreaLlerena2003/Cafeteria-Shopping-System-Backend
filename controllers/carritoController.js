@@ -2,6 +2,7 @@ const { where } = require('sequelize');
 const db = require('../models');
 const Carrito = db.Carrito;
 const Usuario = db.Usuario;
+const CarritoDetalles = db.CarritoDetalle;
 
 const crearCarritoAndGetCarritoId = async (userId) => {
     userId = userId;
@@ -75,8 +76,39 @@ const ObtenerDetallesCarrito = async (req, res) => {
     }
 };
 
+const recalculo_del_total = async (carritoId) => {
+    try {
+        if (!carritoId) {
+            throw new Error('No se envió el carritoId');
+        }
+
+        let carrito = await Carrito.findByPk(carritoId);
+        if (!carrito) {
+            throw new Error('Carrito no encontrado');
+        }
+
+        const carritosDetalles = await CarritoDetalles.findAll({ where: { carritoId: carrito.id } });
+        
+        const totalCarrito = carritosDetalles.reduce((acc, detalle) => acc + detalle.Precio, 0);
+
+        carrito.Total = totalCarrito;
+        await carrito.save();
+
+        const infoCarrito = {
+            carritoId: carrito.id,
+            carritosDetalles: carritosDetalles,
+            Total: carrito.Total
+        };
+
+        return infoCarrito;
+    } catch (error) {
+        console.error('Error al actualizar carrito:', error);
+        throw error;
+    }
+};
 
 module.exports = {
     crearCarritoAndGetCarritoId,
-    ObtenerDetallesCarrito
+    ObtenerDetallesCarrito,
+    recalculo_del_total
 };

@@ -15,6 +15,7 @@ router.post('/agregarACarrito', verificarToken, carritoDetalleController.crearCa
 router.delete('/eliminarDetalleCarrito',carritoDetalleController.eliminarCarritoDetalle);
 router.patch('/modificarDetalleCarritoMas',carritoDetalleController.modificarCarritoDetalleMas);
 router.patch('/modificarDetalleCarritoMenos',carritoDetalleController.modificarCarritoDetalleMenos);
+router.get('/obtenerCarritoConTodosLosDatos',verificarToken,carritoController.ObtenerDetallesCarrito);
 // modificar tamaño
 
 module.exports = router;

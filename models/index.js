@@ -74,8 +74,10 @@ Local.hasMany(Orden, { foreignKey: 'localId', as: 'local' });
 
 Orden.belongsTo(Usuario, { foreignKey: 'userId', as: 'usuario' });
 Orden.belongsTo(Local,{foreignKey: 'localId', as: 'local'});
-MetodoPago.hasMany(Orden, { foreignKey: 'metodoId', as: 'metodopago' });
-Orden.belongsTo(MetodoPago, { foreignKey: 'metodoId', as: 'orden' });
+//MetodoPago.hasMany(Orden, { foreignKey: 'metodoId', as: 'metodopago' });
+//Orden.belongsTo(MetodoPago, { foreignKey: 'metodoId', as: 'orden' });
+Tarjeta.hasMany(Orden, {foreignKey: 'tarjetaId', as: 'tarjeta'});
+Orden.belongsTo(Tarjeta, {foreignKey: 'tarjetaId', as: 'tarjeta' });
 Orden.hasMany(DetallesOrden, { foreignKey: 'ordenId', as: 'detallesorden' });
 DetallesOrden.belongsTo(Orden, { foreignKey: 'ordenId', as: 'orden' });
 Producto.hasMany(DetallesOrden, { foreignKey: 'productoId', as: 'detallesorden' } );

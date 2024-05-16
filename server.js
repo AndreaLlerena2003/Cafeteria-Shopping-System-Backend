@@ -1,12 +1,7 @@
 const express = require('express')
 const cors = require('cors')
-const { Server } = require('socket.io');
 const app = express()
 const http = require('http');
-
-const server = http.createServer(app);
-const io = new Server(server);
-
 app.use(cors());
 app.use(express.json());
 
@@ -40,13 +35,6 @@ app.get('/',(req,res) => {
     res.json({message: 'Hello'})
 })
 
-io.on('connection', (socket) => {
-    console.log('Cliente WebSocket conectado');
-
-    socket.on('disconnect', () => {
-        console.log('Cliente WebSocket desconectado');
-    });
-});
 
 //port
 const PORT = process.env.PORT || 8080
