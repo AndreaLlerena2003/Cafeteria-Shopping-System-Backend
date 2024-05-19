@@ -46,8 +46,8 @@ const crearOrdenesDetalles = async (req, res) => {
                 Precio: detalle.Precio
             });
         }
-  
-        let totalOrden = carritosDetalles.reduce((total, detalle) => total + (detalle.Precio * detalle.Cantidad), 0);
+        let totalOrden = 0;
+        totalOrden = carritosDetalles.reduce((total, detalle) => total + detalle.Precio, 0);
         console.log(totalOrden);
   
         const local = await Local.findByPk(localId);
@@ -61,6 +61,10 @@ const crearOrdenesDetalles = async (req, res) => {
             if (!tarjeta) {
                 return res.status(400).json({ error: 'Tarjeta no encontrada' });
             }
+            await orden.update({tarjetaId: tarjetaId})
+        }
+        else{
+            await orden.update({tarjetaId: null})
         }
   
         console.log(totalOrden);
