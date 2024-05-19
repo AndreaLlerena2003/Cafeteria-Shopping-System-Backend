@@ -6,55 +6,76 @@ const Orden = db.Orden;
 const DetallesOrden = db.DetallesOrden;
 const CarritoDetalles = db.CarritoDetalle;
 const Carrito = db.Carrito;
+const Local = db.Local;
+const Tarjeta = db.Tarjeta;
 
 const crearOrdenesDetalles = async (req, res) => {
-    const { carritoId, metodoDePago, localId } = req.body; 
+    const { metodoDePago, localId, tarjetaId } = req.body;
+    const userId = req.userId;
+    if (!userId) {
+        return res.status(400).send('Identificador de usuario no proporcionado');
+    }
   
     try {
-      if (!carritoId) {
-        throw new Error('No se envió el carritoId');
-      }
+        const carrito = await Carrito.findOne({ where: { userId: userId } });
   
-      let carrito = await Carrito.findByPk(carritoId);
-      if (!carrito) {
-        throw new Error('Carrito no encontrado');
-      }
+        if (!carrito) {
+            return res.status(404).send('Carrito no encontrado');
+        }
   
-      const carritosDetalles = await CarritoDetalles.findAll({ where: { carritoId: carrito.id } });
+        const carritosDetalles = await CarritoDetalles.findAll({ where: { carritoId: carrito.id } });
   
-      const orden = await Orden.create({
-        userId: carrito.userId,
-        FechaHora: new Date(),
-        Estatus: 0,
-        Total: 0.0,
-        MetodoDePago: metodoDePago,
-        localId: localId
-      });
+        if (carritosDetalles.length === 0) {
+            return res.status(400).send('El carrito está vacío');
+        }
   
-      for (let detalle of carritosDetalles) {
-        await DetallesOrden.create({
-          ordenId: orden.id,
-          productoId: detalle.productoId,
-          cantidad: detalle.cantidad,
-          precio: detalle.precio
+        const orden = await Orden.create({
+            userId: carrito.userId,
+            FechaHora: new Date(),
+            Estatus: 0, // Aún no la recoge uwu
+            Total: 0.0,
+            MedioDePago: metodoDePago,
+            localId: localId
         });
-      }
   
-      const ordenDetalles = await DetallesOrden.findAll({ where: { ordenId: orden.id } });
-      let totalOrden = 0;
-      ordenDetalles.forEach(detalle => {
-        totalOrden += detalle.precio * detalle.cantidad; 
-      });
+        for (let detalle of carritosDetalles) {
+            await DetallesOrden.create({
+                ordenId: orden.id,
+                productoId: detalle.productoId,
+                Cantidad: detalle.Cantidad,
+                Precio: detalle.Precio
+            });
+        }
   
-      await orden.update({ Total: totalOrden });
-
+        let totalOrden = carritosDetalles.reduce((total, detalle) => total + (detalle.Precio * detalle.Cantidad), 0);
+        console.log(totalOrden);
   
-      res.status(201).json(orden);
+        const local = await Local.findByPk(localId);
+        if (!local) {
+            return res.status(400).json({ error: 'Local no encontrado' });
+        }
+  
+        // verificamos si el metodo de pago es con tarjeta
+        if (metodoDePago === 1) {
+            const tarjeta = await Tarjeta.findByPk(tarjetaId);
+            if (!tarjeta) {
+                return res.status(400).json({ error: 'Tarjeta no encontrada' });
+            }
+        }
+  
+        console.log(totalOrden);
+        await orden.update({ Total: totalOrden });
+  
+        await CarritoDetalles.destroy({ where: { carritoId: carrito.id } });
+        console.log('Se eliminaron las entradas del carrito correctamente.');
+  
+        res.status(201).json({ orden, ordenDetalles: carritosDetalles, local });
     } catch (error) {
-      console.error('Error al crear orden y detalles de la orden:', error);
-      res.status(500).json({ message: error.message });
+        console.error('Error al crear orden y detalles de la orden:', error);
+        res.status(500).json({ message: error.message });
     }
   };
   
-
-module.exports = crearOrdenesDetalles;
+module.exports = {
+    crearOrdenesDetalles
+  };

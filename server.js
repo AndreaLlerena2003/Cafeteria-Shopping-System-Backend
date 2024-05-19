@@ -19,6 +19,8 @@ const router_producto = require('./routes/productosRoutes');
 const router_carrito = require('./routes/carritoDetalleRoutes');
 const router_carritoDetalle = require('./routes/carritoDetalleRoutes');
 const router_tarjetas = require('./routes/tarjetaRoutes');
+const router_orden = require('./routes/ordenRoutes');
+const router_local = require('./routes/crearLocalRoutes');
 app.use('/api/usuario',router_usuario)
 app.use('/api/ingrediente',router_ingrediente)
 app.use('/api/categorias',router_categorias)
@@ -26,6 +28,8 @@ app.use('/api/productos',router_producto)
 app.use('/api/carrito',router_carrito)
 app.use('/api/carritoDetalle',router_carritoDetalle)
 app.use('/api/tarjeta',router_tarjetas);
+app.use('/api/ordenRoutes',router_orden);
+app.use('/api/local',router_local);
 
  
  

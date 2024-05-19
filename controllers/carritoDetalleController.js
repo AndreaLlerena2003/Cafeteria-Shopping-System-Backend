@@ -36,6 +36,7 @@ const crearCarritoDetalle = async (req, res) => {
             Precio: precio,
             carritoId: carritoId
         });
+        await crearCarritoController.recalculo_del_total(carritoId);
 
         res.status(201).json(nuevoCarritoDetalle);
     } catch (error) {
