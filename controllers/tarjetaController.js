@@ -10,8 +10,8 @@ const validarTarjeta = async(req,res) => {
     if (!NumeroTarjeta || !FechaVMes || !FechaVAño || !Codigo || !userId) {
         return res.status(400).send('Todos los campos son obligatorios');
     }
-    const hashNumeroTarjeta = crypto.createHash('sha256').update(NumeroTarjeta).digest('hex');
-    const tarjetaExistente = await Tarjeta.findOne({ where: { NumeroTarjeta: hashNumeroTarjeta } });
+    //const hashNumeroTarjeta = crypto.createHash('sha256').update(NumeroTarjeta).digest('hex');
+    const tarjetaExistente = await Tarjeta.findOne({ where: { NumeroTarjeta: NumeroTarjeta } });
 
     if (tarjetaExistente) {
         return res.status(400).send('El número de tarjeta ya está registrado');
@@ -42,7 +42,7 @@ const validarTarjeta = async(req,res) => {
         const hashCodigo = crypto.createHash('sha256').update(Codigo).digest('hex');
 
         const info = {
-            NumeroTarjeta: hashNumeroTarjeta,
+            NumeroTarjeta: NumeroTarjeta,
             FechaVMes: hashFechaVMes,
             FechaVAño: hashFechaVAño,
             Codigo: hashCodigo,
@@ -73,7 +73,67 @@ const eliminarTarjeta = async(req,res) => {
     }
 }
 
+
+const obtenerTarjetas = async (req, res) => {
+    const userId = req.userId;
+
+    if (!userId) {
+        return res.status(400).send('El ID de usuario es obligatorio');
+    }
+
+    try {
+        const usuario = await Usuario.findByPk(userId);
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+
+        const tarjetas = await Tarjeta.findAll({ where: { userId: userId } });
+        if (tarjetas.length === 0) {
+            return res.status(404).send('No se encontraron tarjetas para el usuario');
+        }
+
+        const tarjetasOcultas = tarjetas.map(tarjeta => {
+            const numeroTarjeta = tarjeta.NumeroTarjeta;
+            const tarjetaOculta = numeroTarjeta.slice(0, 3) + '*******';
+            return {
+                id: tarjeta.id,
+                numeroTarjeta: tarjetaOculta
+            };
+        });
+
+        res.status(200).json({ tarjetas: tarjetasOcultas });
+    } catch (error) {
+        console.error('Error al obtener las tarjetas:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
+const obtenerTarjetaPorIdConAsteriscos = async (req, res) => {
+    const tarjetaId = req.query.tarjetaId;
+
+    if (!tarjetaId) {
+        return res.status(400).send('El ID de la tarjeta es obligatorio');
+    }
+
+    try {
+        const tarjeta = await Tarjeta.findByPk(tarjetaId);
+        if (!tarjeta) {
+            return res.status(404).send('Tarjeta no encontrada');
+        }
+
+        const numeroTarjeta = tarjeta.NumeroTarjeta;
+        const tarjetaOculta = numeroTarjeta.slice(0, 3) + '*******' ;
+
+        res.status(200).json({ numeroTarjeta: tarjetaOculta });
+    } catch (error) {
+        console.error('Error al obtener la tarjeta:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
 module.exports = {
     validarTarjeta,
-    eliminarTarjeta
+    eliminarTarjeta,
+    obtenerTarjetas,
+    obtenerTarjetaPorIdConAsteriscos
 };

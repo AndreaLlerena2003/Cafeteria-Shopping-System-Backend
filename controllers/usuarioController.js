@@ -278,6 +278,10 @@ const traerTrajetabyId = async(req,res) => {
 }
 
 
+
+
+
+
 module.exports = {
     registrarUsuario,
     iniciarSesion,
@@ -287,5 +291,6 @@ module.exports = {
     traerLongitudContraseña,
     agregarTarjeta ,
     traerTarjetasUsuario, 
-    traerTrajetabyId 
+    traerTrajetabyId,
+
 };
