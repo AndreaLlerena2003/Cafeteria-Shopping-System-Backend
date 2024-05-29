@@ -8,6 +8,10 @@ module.exports = (sequelize,DataTypes) => {
         Precio: {
             type: DataTypes.FLOAT,  
             allowNull: false
+        },
+        Tamaño: {
+            type: DataTypes.INTEGER, 
+            allowNull: false
         }
 
     })

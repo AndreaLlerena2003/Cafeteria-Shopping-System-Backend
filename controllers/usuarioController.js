@@ -1,12 +1,12 @@
 const db = require('../models');
-const jwt = require('jsonwebtoken'); // Generar y verificar tokens JWT
-const dotenv = require('dotenv');  // Cargar Variables de Entorno
-const bcrypt = require('bcrypt'); // Hashing para contraseñas en la BD
+const jwt = require('jsonwebtoken'); 
+const dotenv = require('dotenv');  
+const bcrypt = require('bcrypt'); 
 dotenv.config();
 
 const Usuario = db.Usuario;
 const Tarjeta = db.Tarjeta;
-// Constante de valiadaciones necesarias para crear usuario
+
 const validaciones = [
     {
         validar: (contraseña) => contraseña.length < 5,
@@ -35,11 +35,11 @@ const validaciones = [
 ];
 
 const registrarUsuario = async (req, res) => {
-    if (!req.body.nombreUsuario || !req.body.nombre || !req.body.apellido || !req.body.emailAddress || !req.body.contraseña) {
+    if (!req.body.nombre || !req.body.apellido || !req.body.emailAddress || !req.body.contraseña) {
         return res.status(400).send('Todos los campos son obligatorios');
     }
 
-    const errores = validaciones // Ejecucion de Validaciones
+    const errores = validaciones 
         .filter(v => v.validar(req.body.contraseña))
         .map(v => v.mensaje);
 
@@ -53,7 +53,6 @@ const registrarUsuario = async (req, res) => {
         const hashedContraseña = await bcrypt.hash(req.body.contraseña, 10);
 
         const info = {
-            nombreUsuario: req.body.nombreUsuario,
             nombre: req.body.nombre,
             apellido: req.body.apellido,
             emailAddress: req.body.emailAddress,
@@ -69,18 +68,18 @@ const registrarUsuario = async (req, res) => {
 };
 
 const iniciarSesion = async (req, res) => {
-    if (!req.query.nombreUsuario || !req.query.contraseña) {
-        return res.status(400).send('Necesario Ingresar Nombre y Contraseña');
+    if (!req.query.emailAddress || !req.query.contraseña) {
+        return res.status(400).send('Necesario Ingresar Email y Contraseña');
     }
     try {
         const usuario = await Usuario.findOne({
-            attributes: ['id', 'contraseña'], // Obtener la contraseña almacenada
+            attributes: ['id', 'contraseña'], 
             where: {
-                nombreUsuario: req.query.nombreUsuario,
+                emailAddress: req.query.emailAddress,
             },
         });
         if (!usuario) {
-            return res.status(401).send('Nombre de usuario o contraseñas incorrectos');
+            return res.status(401).send('Email o contraseñas incorrectos');
         }
         // comparar la contraseña ingresada con la almacenada en la base de datos
         const contraseñaValida = await bcrypt.compare(req.query.contraseña, usuario.contraseña);
@@ -104,7 +103,7 @@ const getDatosUser = async (req, res) => {
     try{
         const userId = req.userId;
         const usuario = await Usuario.findByPk(userId, {
-            attributes: ['nombreUsuario', 'nombre', 'apellido', 'emailAddress','foto'],
+            attributes: ['nombre', 'apellido', 'emailAddress','foto'],
         });
         if (!usuario) {
             return res.status(404).send('Usuario no encontrado');
@@ -129,7 +128,7 @@ const modificarDatosUsuario = async (req, res) => {
             return res.status(404).send('Usuario no encontrado');
         }
 
-        const camposParaActualizar = ['nombreUsuario', 'apellido', 'emailAddress'].reduce((acc, campo) => {
+        const camposParaActualizar = ['nombre', 'apellido', 'emailAddress'].reduce((acc, campo) => {
             if (req.body[campo]) acc[campo] = req.body[campo];
             return acc;
         }, {});

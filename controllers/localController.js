@@ -3,14 +3,15 @@ const Local = db.Local;
 
 const crearLocal = async (req, res) => {
     try {
-      const { Nombre, Latitud, Longitud, Horario } = req.body;
+      const { Nombre, Latitud, Longitud, Horario , Direccion} = req.body;
   
   
       const nuevoLocal = await Local.create({
         Nombre: Nombre,
         Latitud: Latitud,
         Longitud: Longitud,
-        Horario: Horario
+        Horario: Horario,
+        Direccion: Direccion
       });
   
      

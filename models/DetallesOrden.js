@@ -5,6 +5,10 @@ module.exports = (sequelize,DataTypes) => {
             type: DataTypes.INTEGER, 
             allowNull: false
         },
+        Tamaño: {
+            type: DataTypes.INTEGER, 
+            allowNull: false
+        },
         Precio: {
             type: DataTypes.FLOAT,  
             allowNull: false

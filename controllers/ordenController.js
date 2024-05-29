@@ -32,7 +32,7 @@ const crearOrdenesDetalles = async (req, res) => {
         const orden = await Orden.create({
             userId: carrito.userId,
             FechaHora: new Date(),
-            Estatus: 0, // Aún no la recoge uwu
+            Estatus: 0, 
             Total: 0.0,
             MedioDePago: metodoDePago,
             localId: localId
@@ -43,7 +43,8 @@ const crearOrdenesDetalles = async (req, res) => {
                 ordenId: orden.id,
                 productoId: detalle.productoId,
                 Cantidad: detalle.Cantidad,
-                Precio: detalle.Precio
+                Precio: detalle.Precio,
+                Tamaño: detalle.Tamaño
             });
         }
         let totalOrden = 0;
@@ -79,7 +80,78 @@ const crearOrdenesDetalles = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
   };
-  
+
+const obtenerOrdenPorId = async (req, res) => {
+    const { ordenId } = req.query;
+
+    try {
+        const orden = await Orden.findByPk(ordenId, {
+            include: [
+                { model: DetallesOrden, as: 'detallesorden' },
+                { model: Local, as: 'local' }
+            ]
+        });
+
+        if (!orden) {
+            return res.status(404).json({ error: 'Orden no encontrada' });
+        }
+
+        res.status(200).json(orden);
+    } catch (error) {
+        console.error('Error al obtener orden por ID:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+const obtenerOrdenesPorUsuario = async (req, res) => {
+    const userId = req.userId;
+
+    try {
+        const ordenes = await Orden.findAll({
+            where: { userId: userId },
+            include: [
+                { model: DetallesOrden, as: 'detallesorden' },
+                { model: Local, as: 'local' }
+            ]
+        });
+
+        if (ordenes.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron órdenes para el usuario' });
+        }
+
+        res.status(200).json(ordenes);
+    } catch (error) {
+        console.error('Error al obtener órdenes por usuario:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const actualizarEstatusOrden = async (req, res) => {
+    const {ordenId} = req.query;
+
+    try {
+        const orden = await Orden.findByPk(ordenId);
+
+        if (!orden) {
+            return res.status(404).json({ error: 'Orden no encontrada' });
+        }
+
+        await orden.update({ Estatus: 1 });
+
+        res.status(200).json({ message: 'Estatus de la orden actualizado correctamente', orden });
+    } catch (error) {
+        console.error('Error al actualizar el estatus de la orden:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 module.exports = {
-    crearOrdenesDetalles
+    crearOrdenesDetalles,
+    obtenerOrdenPorId ,
+    obtenerOrdenesPorUsuario,
+    actualizarEstatusOrden
   };
+
+
