@@ -17,6 +17,9 @@ module.exports = (sequelize,DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: true
         }
+    },
+    {
+        timestamps: false
     })
 
     return Orden

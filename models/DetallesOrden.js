@@ -14,6 +14,9 @@ module.exports = (sequelize,DataTypes) => {
             allowNull: false
         }
 
+    },
+    {
+        timestamps: false
     })
 
     return DetallesOrden
