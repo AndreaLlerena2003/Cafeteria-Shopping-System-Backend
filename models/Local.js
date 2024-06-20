@@ -20,6 +20,10 @@ module.exports = (sequelize,DataTypes) => {
         Direccion: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        Imagen:{
+            type: DataTypes.STRING,
+            allowNull: false
         }
     })
 

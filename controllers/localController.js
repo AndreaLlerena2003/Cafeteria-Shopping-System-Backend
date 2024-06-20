@@ -3,7 +3,7 @@ const Local = db.Local;
 
 const crearLocal = async (req, res) => {
     try {
-      const { Nombre, Latitud, Longitud, Horario , Direccion} = req.body;
+      const { Nombre, Latitud, Longitud, Horario , Direccion, Imagen} = req.body;
   
   
       const nuevoLocal = await Local.create({
@@ -11,7 +11,8 @@ const crearLocal = async (req, res) => {
         Latitud: Latitud,
         Longitud: Longitud,
         Horario: Horario,
-        Direccion: Direccion
+        Direccion: Direccion,
+        Imagen: Imagen
       });
   
      
@@ -48,11 +49,32 @@ const obtenerLocalPorId = async (req, res) => {
     }
 };
 
+const obtenerListaLocales = async (req, res) => {
+    try{
+        const listaLocales = await Local.findAll();
+        if(!listaLocales){
+            return res.status(404).json({message: 'No hay locales'});
+        }
+
+        const locales = listaLocales.map(local => {
+            return {
+                id: local.id,
+                nombreLocal: local.Nombre
+            };
+        });
+        res.status(200).json({locales});
+    }catch(error){
+        console.log('Error al obtener la lista de locales con su id: ', error);
+        res.status(500).json({message: 'Error interno del servidor'});
+    }
+};
+
 
 module.exports = {
     crearLocal,
     obtenerTodosLosLocales,
-    obtenerLocalPorId
+    obtenerLocalPorId,
+    obtenerListaLocales
 };
 
 
