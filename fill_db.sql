@@ -8,7 +8,7 @@ INSERT INTO locals (id, "Nombre", "Latitud", "Longitud", "Horario", "Direccion",
 (3, 'Local 3', -12.1156956, -77.03017490040199, 'Mon - Fri: 8:00 am - 10:00 pm', 'Av. Javier Prado 111', 'https://nextrestaurants.com/wp-content/uploads/2019/04/Restaurant-Outdoor-Design.png');
 
 
-INSERT INTO categorias (id, "Nombre", "Descripcion") VALUES 
+INSERT INTO categoria (id, "Nombre", "Descripcion") VALUES 
 (1, 'Hot Coffee', 'Fresh and hot coffee drinks'),
 (2, 'Iced Coffee', 'Refreshing iced coffee drinks'),
 (3, 'Chocolate', 'Varied chocolate drinks'),
