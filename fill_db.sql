@@ -28,7 +28,7 @@ INSERT INTO usuarios (id, nombre, apellido, "emailAddress", contraseña, foto) V
 (4, 'Ana', 'Lopez', 'ana.lopez@example.com', '$2a$10$MqETGCU29S6G696WBU89Su8nrENLYSdFUWUfNX6EiRANpb7u/OsKS', 'ana.jpg'),
 (5, 'Carlos', 'Fernandez', 'carlos.fernandez@example.com', '$2a$10$6uaN6vYh5qIhWxlbZQ8WbOvU2gbPhCfLLmTI6MLvwnpNw36Gj3Pui', 'carlos.jpg');
 
-INSERT INTO tarjeta (id, "NumeroTarjeta", "FechaVMes", "FechaVAno", "Codigo", "NombreTarjeta", "userId") VALUES 
+INSERT INTO tarjeta (id, "NumeroTarjeta", "FechaVMes", "FechaVAño", "Codigo", "NombreTarjeta", "userId") VALUES 
 (1, '1234567890123456', '12', '25', '1234', 'John Perez', 1),
 (2, '6543210987654321', '06', '24', '4567', 'Maria Gomez', 2),
 (3, '1122334455667788', '11', '26', '7890', 'Luis Martinez', 3),
