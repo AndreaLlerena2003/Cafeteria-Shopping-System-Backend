@@ -22,11 +22,11 @@ INSERT INTO ingredientes (id, "Nombre") VALUES
 (5, 'Whipped Cream');
 
 INSERT INTO usuarios (id, nombre, apellido, "emailAddress", contraseña, foto) VALUES 
-(1, 'John', 'Perez', 'john.perez@example.com', 'password123', 'john.jpg'),
-(2, 'Maria', 'Gomez', 'maria.gomez@example.com', 'password456', 'maria.jpg'),
-(3, 'Luis', 'Martinez', 'luis.martinez@example.com', 'password789', 'luis.jpg'),
-(4, 'Ana', 'Lopez', 'ana.lopez@example.com', 'password012', 'ana.jpg'),
-(5, 'Carlos', 'Fernandez', 'carlos.fernandez@example.com', 'password345', 'carlos.jpg');
+(1, 'John', 'Perez', 'john.perez@example.com', '$2a$10$X6pK.40E2AKxms0LWvn5eej7dqwqH53es1K5T7bwXIMtvywN0G3JC', 'john.jpg'),
+(2, 'Maria', 'Gomez', 'maria.gomez@example.com', '$2a$10$wUf211aMgIrbGH5ALMAG..H9p0U7/qdavrZ/YtndEAppJqeV/2Xha', 'maria.jpg'),
+(3, 'Luis', 'Martinez', 'luis.martinez@example.com', '$2a$10$HCG5z5OCV1iJs8OXkgtpQO9QY5PAMFI1JCY/t/01KIZ.6bHCKLveK', 'luis.jpg'),
+(4, 'Ana', 'Lopez', 'ana.lopez@example.com', '$2a$10$MqETGCU29S6G696WBU89Su8nrENLYSdFUWUfNX6EiRANpb7u/OsKS', 'ana.jpg'),
+(5, 'Carlos', 'Fernandez', 'carlos.fernandez@example.com', '$2a$10$6uaN6vYh5qIhWxlbZQ8WbOvU2gbPhCfLLmTI6MLvwnpNw36Gj3Pui', 'carlos.jpg');
 
 INSERT INTO tarjeta (id, "NumeroTarjeta", "FechaVMes", "FechaVAno", "Codigo", "NombreTarjeta", "userId") VALUES 
 (1, '1234567890123456', '12', '25', '1234', 'John Perez', 1),
