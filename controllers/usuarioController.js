@@ -52,7 +52,11 @@ const registrarUsuario = async (req, res) => {
         // Hashear la contraseña antes de almacenarla en la base de datos :) 
         const hashedContraseña = await bcrypt.hash(req.body.contraseña, 10);
 
+        const maxIdResult = await Usuario.max("id");
+        const nextIdUser = (maxIdResult || 0) + 1;
+
         const info = {
+            id: nextIdUser,
             nombre: req.body.nombre,
             apellido: req.body.apellido,
             emailAddress: req.body.emailAddress,
@@ -83,6 +87,7 @@ const iniciarSesion = async (req, res) => {
         }
         // comparar la contraseña ingresada con la almacenada en la base de datos
         const contraseñaValida = await bcrypt.compare(req.query.contraseña, usuario.contraseña);
+        //const contraseñaValida = req.query.contraseña;
 
         if (contraseñaValida) {
             // generar token con la clave secreta de la variable de entorno
@@ -207,17 +212,22 @@ const agregarTarjeta = async(req,res) => {
         if (!usuario) {
             return res.status(404).send('Usuario no encontrado');
         }
-        if (!req.body.NumeroTarjeta || !req.body.FechaVMes || !req.body.FechaVAño || !req.body.Codigo){
+        if (!req.body.NumeroTarjeta || !req.body.FechaVMes || !req.body.FechaVAño || !req.body.Codigo || !req.body.NombreTarjeta){
             return res.status(404).send('Faltan campos para poder agregar una tarjeta');
         }
-        const { NumeroTarjeta, FechaVMes, FechaVAño, Codigo} = req.body;
+        const { NumeroTarjeta, FechaVMes, FechaVAño, Codigo, NombreTarjeta} = req.body;
+
+        const maxIdResult = await Tarjeta.max("id");
+        const nextIdTarjeta = (maxIdResult || 0) + 1;
 
         const nuevaTarjeta = await Tarjeta.create({
+            id: nextIdTarjeta,
             userId,
             NumeroTarjeta,
             FechaVMes,
             FechaVAño,
-            Codigo
+            Codigo,
+            NombreTarjeta
         })
         return res.status(201).json({nuevaTarjeta});
     }catch(error){

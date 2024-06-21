@@ -41,7 +41,11 @@ const validarTarjeta = async(req,res) => {
         const hashFechaVAño = crypto.createHash('sha256').update(FechaVAño).digest('hex');
         const hashCodigo = crypto.createHash('sha256').update(Codigo).digest('hex');
 
+        const maxIdResult = await Tarjeta.max("id");
+        const nextIdTarjeta = (maxIdResult || 0) + 1;
+
         const info = {
+            id: nextIdTarjeta,
             NumeroTarjeta: NumeroTarjeta,
             FechaVMes: hashFechaVMes,
             FechaVAño: hashFechaVAño,

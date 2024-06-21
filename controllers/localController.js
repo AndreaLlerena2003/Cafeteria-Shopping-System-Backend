@@ -4,9 +4,13 @@ const Local = db.Local;
 const crearLocal = async (req, res) => {
     try {
       const { Nombre, Latitud, Longitud, Horario , Direccion, Imagen} = req.body;
+
+      const maxIdResult = await Local.max("id");
+      const nextIdLocal = (maxIdResult || 0) + 1;
   
   
       const nuevoLocal = await Local.create({
+        id: nextIdLocal,
         Nombre: Nombre,
         Latitud: Latitud,
         Longitud: Longitud,

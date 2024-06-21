@@ -28,7 +28,11 @@ const crearProductoConIngredientes = async (req, res) => {
          console.log('Categoría encontrada:', categoriaExistente);
 
         // se crea producto jijiji deberia comer
+        const maxIdResult = await Producto.max("id");
+        const nextIdProducto = (maxIdResult || 0) + 1;
+        
         const nuevoProducto = await Producto.create({ 
+            id: nextIdProducto,
             Nombre, 
             Descripcion, 
             Precio, 

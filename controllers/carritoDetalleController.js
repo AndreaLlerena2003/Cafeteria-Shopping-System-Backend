@@ -42,8 +42,11 @@ const crearCarritoDetalle = async (req, res) => {
             precio += 6;
         }
 
+        const maxIdResult = await CarritoDetalle.max("id");
+        const nextIdCarrito = (maxIdResult || 0) + 1;
     
         const nuevoCarritoDetalle = await CarritoDetalle.create({
+            id: nextIdCarrito,
             productoId: productoId,
             Cantidad: cantidad,
             Precio: precio,
