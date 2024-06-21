@@ -207,17 +207,18 @@ const agregarTarjeta = async(req,res) => {
         if (!usuario) {
             return res.status(404).send('Usuario no encontrado');
         }
-        if (!req.body.NumeroTarjeta || !req.body.FechaVMes || !req.body.FechaVAño || !req.body.Codigo){
+        if (!req.body.NumeroTarjeta || !req.body.FechaVMes || !req.body.FechaVAño || !req.body.Codigo || !req.body.NombreTarjeta){
             return res.status(404).send('Faltan campos para poder agregar una tarjeta');
         }
-        const { NumeroTarjeta, FechaVMes, FechaVAño, Codigo} = req.body;
+        const { NumeroTarjeta, FechaVMes, FechaVAño, Codigo, NombreTarjeta} = req.body;
 
         const nuevaTarjeta = await Tarjeta.create({
             userId,
             NumeroTarjeta,
             FechaVMes,
             FechaVAño,
-            Codigo
+            Codigo,
+            NombreTarjeta
         })
         return res.status(201).json({nuevaTarjeta});
     }catch(error){
