@@ -63,7 +63,7 @@ const obtenerListaLocales = async (req, res) => {
         const locales = listaLocales.map(local => {
             return {
                 id: local.id,
-                nombreLocal: local.Nombre
+                Nombre: local.Nombre
             };
         });
         res.status(200).json({locales});

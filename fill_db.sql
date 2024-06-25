@@ -22,11 +22,11 @@ INSERT INTO ingredientes (id, "Nombre") VALUES
 (5, 'Whipped Cream');
 
 INSERT INTO usuarios (id, nombre, apellido, "emailAddress", contraseña, foto) VALUES 
-(1, 'John', 'Perez', 'john.perez@example.com', '$2a$10$X6pK.40E2AKxms0LWvn5eej7dqwqH53es1K5T7bwXIMtvywN0G3JC', 'john.jpg'),
-(2, 'Maria', 'Gomez', 'maria.gomez@example.com', '$2a$10$wUf211aMgIrbGH5ALMAG..H9p0U7/qdavrZ/YtndEAppJqeV/2Xha', 'maria.jpg'),
-(3, 'Luis', 'Martinez', 'luis.martinez@example.com', '$2a$10$HCG5z5OCV1iJs8OXkgtpQO9QY5PAMFI1JCY/t/01KIZ.6bHCKLveK', 'luis.jpg'),
-(4, 'Ana', 'Lopez', 'ana.lopez@example.com', '$2a$10$MqETGCU29S6G696WBU89Su8nrENLYSdFUWUfNX6EiRANpb7u/OsKS', 'ana.jpg'),
-(5, 'Carlos', 'Fernandez', 'carlos.fernandez@example.com', '$2a$10$6uaN6vYh5qIhWxlbZQ8WbOvU2gbPhCfLLmTI6MLvwnpNw36Gj3Pui', 'carlos.jpg');
+(1, 'John', 'Perez', 'john.perez@gmail.com', '$2a$10$X6pK.40E2AKxms0LWvn5eej7dqwqH53es1K5T7bwXIMtvywN0G3JC', 'john.jpg'),
+(2, 'Maria', 'Gomez', 'maria.gomez@gmail.com', '$2a$10$wUf211aMgIrbGH5ALMAG..H9p0U7/qdavrZ/YtndEAppJqeV/2Xha', 'maria.jpg'),
+(3, 'Luis', 'Martinez', 'luis.martinez@gmail.com', '$2a$10$HCG5z5OCV1iJs8OXkgtpQO9QY5PAMFI1JCY/t/01KIZ.6bHCKLveK', 'luis.jpg'),
+(4, 'Ana', 'Lopez', 'ana.lopez@gmail.com', '$2a$10$MqETGCU29S6G696WBU89Su8nrENLYSdFUWUfNX6EiRANpb7u/OsKS', 'ana.jpg'),
+(5, 'Carlos', 'Fernandez', 'carlos.fernandez@gmail.com', '$2a$10$6uaN6vYh5qIhWxlbZQ8WbOvU2gbPhCfLLmTI6MLvwnpNw36Gj3Pui', 'carlos.jpg');
 
 INSERT INTO tarjeta (id, "NumeroTarjeta", "FechaVMes", "FechaVAño", "Codigo", "NombreTarjeta", "userId") VALUES 
 (1, '1234567890123456', '12', '25', '1234', 'John Perez', 1),
@@ -44,16 +44,16 @@ INSERT INTO carritos (id, "Total", "userId") VALUES
 (5, 120.75, 5);
 
 INSERT INTO productos (id, "Nombre", "Descripcion", "Precio", "Imagen", "categoriaId") VALUES 
-(1, 'Espresso', 'Hot espresso coffee', 2.50, 'espresso.jpg', 1),
-(2, 'Latte', 'Hot latte coffee', 3.00, 'latte.jpg', 1),
-(3, 'Iced Americano', 'Iced americano coffee', 2.50, 'iced_americano.jpg', 2),
-(4, 'Iced Latte', 'Iced latte coffee', 3.50, 'iced_latte.jpg', 2),
-(5, 'Hot Chocolate', 'Hot chocolate drink', 2.75, 'hot_chocolate.jpg', 3),
-(6, 'Cappuccino', 'Hot cappuccino coffee', 3.25, 'cappuccino.jpg', 1),
-(7, 'Mocha', 'Hot mocha coffee', 3.50, 'mocha.jpg', 4),
-(8, 'Iced Mocha', 'Iced mocha coffee', 3.75, 'iced_mocha.jpg', 4),
-(9, 'Macchiato', 'Hot macchiato coffee', 3.00, 'macchiato.jpg', 1),
-(10, 'Iced Macchiato', 'Iced macchiato coffee', 3.50, 'iced_macchiato.jpg', 2);
+(1, 'Espresso', 'Hot espresso coffee', 2.50, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 1),
+(2, 'Latte', 'Hot latte coffee', 3.00, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 1),
+(3, 'Iced Americano', 'Iced americano coffee', 2.50, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 2),
+(4, 'Iced Latte', 'Iced latte coffee', 3.50, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 2),
+(5, 'Hot Chocolate', 'Hot chocolate drink', 2.75, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 3),
+(6, 'Cappuccino', 'Hot cappuccino coffee', 3.25, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 1),
+(7, 'Mocha', 'Hot mocha coffee', 3.50, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 4),
+(8, 'Iced Mocha', 'Iced mocha coffee', 3.75, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 4),
+(9, 'Macchiato', 'Hot macchiato coffee', 3.00, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 1),
+(10, 'Iced Macchiato', 'Iced macchiato coffee', 3.50, 'https://londonschoolofcoffee.com/cdn/shop/products/LSC_Product_Pic_600_x_469_9_1_600x490.png?v=1582562355', 2);
 
 INSERT INTO ingredienteproductos ("productoId", "ingredienteId") VALUES 
 (1, 3),  -- Espresso
