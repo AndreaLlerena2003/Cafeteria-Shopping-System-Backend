@@ -5,8 +5,9 @@ const Carrito = db.Carrito;
 const crearCarritoController = require('./carritoController');
 
 const crearCarritoDetalle = async (req, res) => {
-    const { productoId: initialProductoId, cantidad: initialCantidad, userId, tamaño: initialTamaño } = req.body;
+    const { productoId: initialProductoId, cantidad: initialCantidad, tamaño: initialTamaño } = req.body;
     try {
+        userId = req.userId
         console.log(userId);  
         
         
