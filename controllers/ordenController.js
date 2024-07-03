@@ -8,7 +8,7 @@ const CarritoDetalles = db.CarritoDetalle;
 const Carrito = db.Carrito;
 const Local = db.Local;
 const Tarjeta = db.Tarjeta;
-
+const Producto = db.Producto;
 const crearOrdenesDetalles = async (req, res) => {
     const { metodoDePago, localId, tarjetaId } = req.body;
     const userId = req.userId;
@@ -28,10 +28,10 @@ const crearOrdenesDetalles = async (req, res) => {
         if (carritosDetalles.length === 0) {
             return res.status(400).send('El carrito está vacío');
         }
-
+        
         const maxIdResult = await Orden.max("id");
         const nextIdOrden = (maxIdResult || 0) + 1;
-  
+
         const orden = await Orden.create({
             id: nextIdOrden,
             userId: carrito.userId,
@@ -41,15 +41,22 @@ const crearOrdenesDetalles = async (req, res) => {
             MedioDePago: metodoDePago,
             localId: localId
         });
-  
+        const detallesOrdenes = [];
         for (let detalle of carritosDetalles) {
-            await DetallesOrden.create({
+            const producto = await Producto.findByPk(detalle.productoId);
+
+            const nuevoDetalle = await DetallesOrden.create({
                 ordenId: orden.id,
                 productoId: detalle.productoId,
                 Cantidad: detalle.Cantidad,
                 Precio: detalle.Precio,
                 Tamaño: detalle.Tamaño
             });
+
+            detallesOrdenes.push({
+                DetallesOrden: nuevoDetalle,
+                Producto: producto 
+            }); 
         }
         let totalOrden = 0;
         totalOrden = carritosDetalles.reduce((total, detalle) => total + detalle.Precio, 0);
@@ -78,21 +85,22 @@ const crearOrdenesDetalles = async (req, res) => {
         await CarritoDetalles.destroy({ where: { carritoId: carrito.id } });
         console.log('Se eliminaron las entradas del carrito correctamente.');
   
-        res.status(201).json({ orden, ordenDetalles: carritosDetalles, local });
+        res.status(201).json({ orden });
     } catch (error) {
         console.error('Error al crear orden y detalles de la orden:', error);
         res.status(500).json({ message: error.message });
     }
   };
 
+ 
 const obtenerOrdenPorId = async (req, res) => {
     const { ordenId } = req.query;
 
     try {
         const orden = await Orden.findByPk(ordenId, {
             include: [
-                { model: DetallesOrden, as: 'detallesorden' },
-                { model: Local, as: 'local' }
+                { model: DetallesOrden, as: 'detallesorden', include: [{ model: Producto, as: 'producto' }]  }, 
+                { model: Local, as: 'local' } 
             ]
         });
 
@@ -155,7 +163,7 @@ module.exports = {
     crearOrdenesDetalles,
     obtenerOrdenPorId ,
     obtenerOrdenesPorUsuario,
-    actualizarEstatusOrden
+    actualizarEstatusOrden,
+   
   };
-
 

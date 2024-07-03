@@ -87,7 +87,6 @@ const iniciarSesion = async (req, res) => {
         }
         // comparar la contraseña ingresada con la almacenada en la base de datos
         const contraseñaValida = await bcrypt.compare(req.query.contraseña, usuario.contraseña);
-        //const contraseñaValida = req.query.contraseña;
 
         if (contraseñaValida) {
             // generar token con la clave secreta de la variable de entorno

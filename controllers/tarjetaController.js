@@ -99,7 +99,7 @@ const obtenerTarjetas = async (req, res) => {
 
         const tarjetasOcultas = tarjetas.map(tarjeta => {
             const numeroTarjeta = tarjeta.NumeroTarjeta;
-            const tarjetaOculta = '***********' + numeroTarjeta.slice(11, 15);
+            const tarjetaOculta = numeroTarjeta.slice(0, 3) + '*******';
             return {
                 id: tarjeta.id,
                 numeroTarjeta: tarjetaOculta,
@@ -128,7 +128,7 @@ const obtenerTarjetaPorIdConAsteriscos = async (req, res) => {
         }
 
         const numeroTarjeta = tarjeta.NumeroTarjeta;
-        const tarjetaOculta = '************' + numeroTarjeta.slice(12, 15);
+        const tarjetaOculta = numeroTarjeta.slice(0, 3) + '*******';;
 
         res.status(200).json({ numeroTarjeta: tarjetaOculta });
     } catch (error) {
