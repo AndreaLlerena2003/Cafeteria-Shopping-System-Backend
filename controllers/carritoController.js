@@ -1,9 +1,9 @@
 const { where } = require('sequelize');
-const { Producto } = require('../models');
 const db = require('../models');
 const Carrito = db.Carrito;
 const Usuario = db.Usuario;
 const CarritoDetalles = db.CarritoDetalle;
+const Producto = db.Producto;
 
 const crearCarritoAndGetCarritoId = async (userId) => {
     userId = userId;
@@ -54,7 +54,7 @@ const ObtenerDetallesCarrito = async (req, res) => {
         }
 
        
-        const carritosDetalles = await CarritoDetalles.findAll({ where: { carritoId: carrito.id }, include: [{model: Producto, as: Producto, attributes: ['Nombre']}], attributes: ['id','Tamaño', 'Cantidad', 'Precio']  });
+        const carritosDetalles = await CarritoDetalles.findAll({ where: { carritoId: carrito.id }, include: [{model: Producto, as: 'producto', attributes: ['Nombre']}], attributes: ['id','Tamaño', 'Cantidad', 'Precio']  });
 
        
         let totalCarrito = 0;
