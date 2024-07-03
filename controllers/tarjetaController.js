@@ -4,10 +4,10 @@ const {Usuario} = require("../models");
 const crypto = require('crypto');
 
 const validarTarjeta = async(req,res) => {
-    const {NumeroTarjeta,FechaVMes,FechaVAño,Codigo} = req.body
+    const {NumeroTarjeta,FechaVMes,FechaVAño,Codigo,NombreTarjeta} = req.body
     userId = req.userId;
     const mesesValidos = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-    if (!NumeroTarjeta || !FechaVMes || !FechaVAño || !Codigo || !userId) {
+    if (!NumeroTarjeta || !FechaVMes || !FechaVAño || !Codigo || !userId || !NombreTarjeta) {
         return res.status(400).send('Todos los campos son obligatorios');
     }
     //const hashNumeroTarjeta = crypto.createHash('sha256').update(NumeroTarjeta).digest('hex');
@@ -33,7 +33,7 @@ const validarTarjeta = async(req,res) => {
         if(FechaVAño.length !== 2){
             return res.status(500).send("Los digitos del año no son validos"); //por internet 6
         }
-        if(Codigo.length!==6){
+        if(Codigo.length!==4){
             return res.status(500).send("Los digitos del codigo no son validos"); 
         }
         //const hashNumeroTarjeta = crypto.createHash('sha256').update(NumeroTarjeta).digest('hex');
@@ -41,11 +41,16 @@ const validarTarjeta = async(req,res) => {
         const hashFechaVAño = crypto.createHash('sha256').update(FechaVAño).digest('hex');
         const hashCodigo = crypto.createHash('sha256').update(Codigo).digest('hex');
 
+        const maxIdResult = await Tarjeta.max("id");
+        const nextIdTarjeta = (maxIdResult || 0) + 1;
+
         const info = {
+            id: nextIdTarjeta,
             NumeroTarjeta: NumeroTarjeta,
             FechaVMes: hashFechaVMes,
             FechaVAño: hashFechaVAño,
             Codigo: hashCodigo,
+            NombreTarjeta: NombreTarjeta,
             userId: userId
         }
         const tarjeta = await Tarjeta.create(info);
@@ -97,7 +102,8 @@ const obtenerTarjetas = async (req, res) => {
             const tarjetaOculta = numeroTarjeta.slice(0, 3) + '*******';
             return {
                 id: tarjeta.id,
-                numeroTarjeta: tarjetaOculta
+                numeroTarjeta: tarjetaOculta,
+                nombreTarjeta: tarjeta.NombreTarjeta
             };
         });
 
@@ -122,7 +128,7 @@ const obtenerTarjetaPorIdConAsteriscos = async (req, res) => {
         }
 
         const numeroTarjeta = tarjeta.NumeroTarjeta;
-        const tarjetaOculta = numeroTarjeta.slice(0, 3) + '*******' ;
+        const tarjetaOculta = numeroTarjeta.slice(0, 3) + '*******';;
 
         res.status(200).json({ numeroTarjeta: tarjetaOculta });
     } catch (error) {

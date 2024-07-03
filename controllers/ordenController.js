@@ -28,8 +28,12 @@ const crearOrdenesDetalles = async (req, res) => {
         if (carritosDetalles.length === 0) {
             return res.status(400).send('El carrito está vacío');
         }
-  
+        
+        const maxIdResult = await Orden.max("id");
+        const nextIdOrden = (maxIdResult || 0) + 1;
+
         const orden = await Orden.create({
+            id: nextIdOrden,
             userId: carrito.userId,
             FechaHora: new Date(),
             Estatus: 0, 
@@ -162,5 +166,4 @@ module.exports = {
     actualizarEstatusOrden,
    
   };
-
 

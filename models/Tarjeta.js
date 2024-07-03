@@ -17,7 +17,14 @@ module.exports = (sequelize,DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        NombreTarjeta:{
+            type: DataTypes.STRING,
+            allowNull: false
+        }
 
+    },
+    {
+        timestamps: false
     })
 
 

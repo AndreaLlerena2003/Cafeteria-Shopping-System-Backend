@@ -7,7 +7,15 @@ const CategoriaProducto =  db.CategoriaProducto;
 const crearCategoriaProducto = async(req,res) => {
     try{
         const {Nombre, Descripcion} = req.body;
-        const nuevaCategoria = await CategoriaProducto.create({ Nombre, Descripcion });
+        
+        const maxIdResult = await CategoriaProducto.max("id");
+        const nextIdCarritoDetalle = (maxIdResult || 0) + 1;
+
+        const nuevaCategoria = await CategoriaProducto.create({ 
+            id: nextIdCarritoDetalle,
+            Nombre: Nombre,
+            Descripcion: Descripcion 
+        });
         res.status(201).json(nuevaCategoria);
     } catch(error){
         console.error('Error al crear la categoría:', error);

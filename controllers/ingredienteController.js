@@ -8,7 +8,14 @@ const Ingrediente =  db.Ingrediente;
 const crearIngrediente = async(req,res) => {
     try{
         const {nombre} = req.body;
-        const nuevoIngrediente = await Ingrediente.create({ Nombre: nombre });
+
+        const maxIdResult = await Ingrediente.max("id");
+        const nextIdIngrediente = (maxIdResult || 0) + 1;
+        
+        const nuevoIngrediente = await Ingrediente.create({ 
+            id: nextIdIngrediente,
+            Nombre: nombre 
+        });
         res.status(201).json(nuevoIngrediente);
     } catch(error){
         console.error('Error al crear ingrediente:', error);

@@ -14,8 +14,12 @@ const crearCarritoAndGetCarritoId = async (userId) => {
             }
         });
 
+        const maxIdResult = await Carrito.max("id");
+        const nextIdCarrito = (maxIdResult || 0) + 1;
+
         if (!carrito) {
             carrito = await Carrito.create({
+                id: nextIdCarrito,
                 userId: userId
             });
         }
