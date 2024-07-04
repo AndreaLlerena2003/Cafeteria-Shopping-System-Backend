@@ -2,11 +2,12 @@ const db = require('../models');
 const jwt = require('jsonwebtoken'); 
 const dotenv = require('dotenv');  
 const bcrypt = require('bcrypt'); 
+const multer = require('multer');
+const path = require('path');
 dotenv.config();
-
 const Usuario = db.Usuario;
 const Tarjeta = db.Tarjeta;
-
+const {storage,upload} = require('../middleware/photoMiddleware');
 const validaciones = [
     {
         validar: (contraseña) => contraseña.length < 5,
@@ -33,6 +34,8 @@ const validaciones = [
         mensaje: 'La contraseña debe incluir al menos un caracter especial (!, @, #, etc.)'
     }
 ];
+
+
 
 const registrarUsuario = async (req, res) => {
     if (!req.body.nombre || !req.body.apellido || !req.body.emailAddress || !req.body.contraseña) {
@@ -70,6 +73,46 @@ const registrarUsuario = async (req, res) => {
         res.status(500).send('Error al registrar el Usuario');
     }
 };
+
+const uploadPhoto = async (req, res) => {
+    try {
+        upload.single('imagen')(req, res, async (err) => {
+            if (err) {
+                return res.status(400).json({ success: false, message: 'Error al subir la imagen', error: err.message });
+            }
+            const userId = req.userId; 
+            const usuario = await Usuario.findByPk(userId);
+            if (!usuario) {
+                return res.status(404).send('Usuario no encontrado');
+            }
+            usuario.foto = req.file.filename; 
+            await usuario.save();
+            res.json({ success: true, message: 'Imagen subida y guardada correctamente', filename: req.file.filename });
+        });
+    } catch (error) {
+        console.error('Error al subir la imagen:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+};
+
+
+const getPhotoByUserToken = async(req,res) => {
+    try{
+        const userId = req.userId;
+        const usuario = await Usuario.findByPk(userId);
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+        if (!usuario.foto) {
+            return res.status(404).send('El usuario no tiene una foto de perfil');
+        }
+        const fotoPath = path.join(__dirname, `../Images/${usuario.foto}`);
+        res.sendFile(fotoPath);
+    }catch(error){
+        console.error('Error al obtener la foto de perfil:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+}
 
 const iniciarSesion = async (req, res) => {
     if (!req.query.emailAddress || !req.query.contraseña) {
@@ -201,7 +244,6 @@ const traerLongitudContraseña = async(req,res) => {
 
 }
 
-// const subir foto
 
 // agregar tarjeta
 const agregarTarjeta = async(req,res) => {
@@ -301,5 +343,7 @@ module.exports = {
     agregarTarjeta ,
     traerTarjetasUsuario, 
     traerTrajetabyId,
+    uploadPhoto,
+    getPhotoByUserToken 
 
 };

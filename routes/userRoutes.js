@@ -11,6 +11,6 @@ router.get('/traerLongitudContrasena',verificarToken,usuarioController.traerLong
 router.post('/agregarTarjeta',verificarToken,usuarioController.agregarTarjeta)
 router.get('/traerTarjetasUsuario',verificarToken,usuarioController.traerTarjetasUsuario)
 router.get('/traerTrajetabyId',verificarToken,usuarioController.traerTrajetabyId)
-
-
+router.post('/subir-foto',verificarToken,usuarioController.uploadPhoto)
+router.get('/obtener-fotouser',verificarToken,usuarioController.getPhotoByUserToken)
 module.exports = router
