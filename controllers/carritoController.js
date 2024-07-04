@@ -54,7 +54,7 @@ const ObtenerDetallesCarrito = async (req, res) => {
         }
 
        
-        const carritosDetalles = await CarritoDetalles.findAll({ where: { carritoId: carrito.id }, include: [{model: Producto, as: 'producto', attributes: ['Nombre']}], attributes: ['id','Tamaño', 'Cantidad', 'Precio']  });
+        const carritosDetalles = await CarritoDetalles.findAll({ where: { carritoId: carrito.id }, include: [{model: Producto, as: 'producto', attributes: ['Nombre']}], attributes: ['id','Tamaño', 'Cantidad', 'Precio'],order: [['id', 'ASC']]  });
 
        
         let totalCarrito = 0;
