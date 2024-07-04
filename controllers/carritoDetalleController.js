@@ -71,7 +71,7 @@ const eliminarCarritoDetalle = async (req, res) => {
     console.log(carritoDetalleId);  
         try {
             let carrito = await CarritoDetalle.findByPk(carritoDetalleId);
-            if (!carrito){
+            if (carrito === null){
                 return res.status(404).json({ error: 'Carrito no encontrado' });
             }
             await carrito.destroy();
