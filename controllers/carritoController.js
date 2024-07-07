@@ -59,7 +59,7 @@ const ObtenerDetallesCarrito = async (req, res) => {
        
         let totalCarrito = 0;
         carritosDetalles.forEach(detalle => {
-            totalCarrito += detalle.Precio;
+            totalCarrito += (detalle.Precio * detalle.Cantidad);
         });
 
    
