@@ -59,7 +59,7 @@ const crearOrdenesDetalles = async (req, res) => {
             }); 
         }
         let totalOrden = 0;
-        totalOrden = carritosDetalles.reduce((total, detalle) => total + detalle.Precio, 0);
+        totalOrden = carritosDetalles.reduce((total, detalle) => total + (detalle.Precio*detalle.Cantidad), 0);
         console.log(totalOrden);
   
         const local = await Local.findByPk(localId);
@@ -139,6 +139,29 @@ const obtenerOrdenesPorUsuario = async (req, res) => {
     }
 };
 
+const obtenerOrdenActiva = async (req, res) => {
+    const userId = req.userId;
+
+    try {
+        const orden = await Orden.findOne({
+            where: { 
+                userId: userId,
+                Estatus: 0
+            },
+            attributes: ["id"]
+        });
+
+        if (!orden) {
+            return res.status(404).json(null);
+        }
+
+        res.status(200).json(orden);
+    } catch (error) {
+        console.error('Error al obtener orden del usuario:', error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
 const actualizarEstatusOrden = async (req, res) => {
     const {ordenId} = req.query;
 
@@ -164,6 +187,6 @@ module.exports = {
     obtenerOrdenPorId ,
     obtenerOrdenesPorUsuario,
     actualizarEstatusOrden,
-   
+   obtenerOrdenActiva
   };
 
