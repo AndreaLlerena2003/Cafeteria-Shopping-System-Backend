@@ -100,7 +100,8 @@ const obtenerOrdenPorId = async (req, res) => {
         const orden = await Orden.findByPk(ordenId, {
             include: [
                 { model: DetallesOrden, as: 'detallesorden', include: [{ model: Producto, as: 'producto' }]  }, 
-                { model: Local, as: 'local' } 
+                { model: Local, as: 'local' },
+                { model: Tarjeta, as: 'tarjeta', attributes: ['NombreTarjeta', 'NumeroTarjeta']}
             ]
         });
 

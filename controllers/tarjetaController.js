@@ -102,8 +102,8 @@ const obtenerTarjetas = async (req, res) => {
             const tarjetaOculta = numeroTarjeta.slice(0, 3) + '*******';
             return {
                 id: tarjeta.id,
-                numeroTarjeta: tarjetaOculta,
-                nombreTarjeta: tarjeta.NombreTarjeta
+                NumeroTarjeta: tarjetaOculta,
+                NombreTarjeta: tarjeta.NombreTarjeta
             };
         });
 
