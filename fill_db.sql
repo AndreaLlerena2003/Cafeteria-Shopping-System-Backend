@@ -77,25 +77,3 @@ INSERT INTO ingredienteproductos ("productoId", "ingredienteId") VALUES
 (9, 2),  -- Macchiato
 (10, 3), -- Iced Macchiato
 (10, 2); -- Iced Macchiato
-
-INSERT INTO carritodetalles (id, "Cantidad", "Precio", "Tamaño", "carritoId", "productoId") VALUES 
-(1, 2, 5.00, 1, 1, 1),
-(2, 1, 2.00, 1, 2, 2),
-(3, 3, 15.00, 1, 3, 3),
-(4, 1, 3.50, 1, 4, 4),
-(5, 2, 5.50, 1, 5, 5);
-
-INSERT INTO ordens (id, "FechaHora", "Estatus", "Total", "MedioDePago", "userId", "localId", "tarjetaId") VALUES 
-(1, '2024-06-20T12:00:00.000Z', 1, 150.50, 1, 1, 1, 1),
-(2, '2024-06-21T14:30:00.000Z', 2, 75.25, 2, 2, 2, 2),
-(3, '2024-06-22T16:45:00.000Z', 1, 200.00, 3, 3, 3, 3),
-(4, '2024-06-23T11:15:00.000Z', 3, 50.00, 1, 4, 1, 4),
-(5, '2024-06-24T13:00:00.000Z', 2, 120.75, 1, 5, 2, 5);
-
-INSERT INTO detallesordens (id, "Cantidad", "Tamaño", "Precio", "ordenId", "productoId") VALUES 
-(1, 2, 1, 5.00, 1, 1),
-(2, 1, 1, 2.00, 2, 2),
-(3, 3, 1, 15.00, 3, 3),
-(4, 1, 1, 3.50, 4, 4),
-(5, 2, 1, 5.50, 5, 5);
-
